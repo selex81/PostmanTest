@@ -1,0 +1,449 @@
+{
+	"info": {
+		"_postman_id": "d67f6c90-5169-4f76-864a-c3ff65498bd4",
+		"name": "ProyectoSegundaMano",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Crear usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "76083a6c-5c80-4c83-8896-17748337740f",
+						"exec": [
+							"var AllData = pm.response.json();",
+							"pm.test(\"Validar creacion de usuario\", function(){",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Validar que la respuesta es un JSON valido\", function () { ",
+							"     pm.response.to.be.json; ",
+							"});",
+							"pm.test(\"Validar que la respuesta tiene un Body\", function () { ",
+							"     pm.response.to.be.withBody; ",
+							"});",
+							"pm.test(\"Validar existencia de token\", function(){",
+							"    //var token = pm.response.json();",
+							"    pm.expect(AllData.access_token).to.be.not.empty;",
+							"});",
+							"pm.test(\"Validar que usuario tiene ID\", function(){",
+							"    //var acc_id = pm.response.json();",
+							"    pm.expect(AllData.account.account_id).to.be.not.empty;",
+							"});",
+							"pm.test(\"Validar el email recibido\", function(){",
+							"    //var email = pm.response.json();",
+							"    pm.expect(AllData.account.email).to.eql(\"selex82@mailinator.com\");",
+							"});",
+							"pm.test(\"Validar nombre de usuario recibido\", function(){",
+							"    //var user_nam = pm.response.json();",
+							"    pm.expect(AllData.account.name).to.eql(\"selex82\");",
+							"});",
+							"console.log(pm.response);",
+							"console.log(pm.response.code);",
+							"console.log(pm.response.status);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic c2VsZXg4MkBtYWlsaW5hdG9yLmNvbTptMXAzcnIw",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"account\":{\"email\":\"selex82@mailinator.com\"}}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/nga/api/v1.1/private/accounts",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1.1",
+						"private",
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "base_url",
+							"value": "webapi.segundamano.mx",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear anuncio",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d54741fa-cead-40d8-a557-6cf9fe803580",
+						"exec": [
+							"let getTokenRequest = {\r",
+							"    method: 'POST',\r",
+							"    url: 'https://webapi.segundamano.mx/nga/api/v1.7/private/accounts',\r",
+							"    header: {\r",
+							"            Authorization: 'tag:scmcoord.com,2013:api mc1x9de8a17738fc0996ebc2ee0dc54ec7b42504fb86_v2'\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(getTokenRequest, (err, response) => {\r",
+							"    var jsonResponse = response.json(),\r",
+							"        newAccessToken = jsonResponse.access_token;\r",
+							"    pm.environment.set('accessToken', newAccessToken);\r",
+							"    pm.variables.set('accessToken', newAccessToken);\r",
+							"    console.log({ err, response, newAccessToken })\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "eca13a1b-a1e9-4ec0-9480-e3471df6f5ba",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.test(\"Validar Status 201\", function(){",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Validar que tenga un body\", function(){",
+							"    pm.response.to.be.withBody;",
+							"});",
+							"pm.test(\"validar Json\", function(){",
+							"    pm.response.to.be.json;",
+							"});",
+							"pm.test(\"Validar Acción correcta\", function(){",
+							"    pm.expect(jsonData.action.action_type).to.eql(\"new\");",
+							"});",
+							"pm.test(\"Validar que el Anuncio tenga un ID\", function(){",
+							"    pm.expect(jsonData.ad.ad_id).to.be.not.empty;",
+							"});",
+							"pm.test(\"Validar Título del Anuncio\", function(){",
+							"    pm.expect(jsonData.ad.subject).to.eql(\"Venta pisapapeles antiguos\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate, br",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "tag:scmcoord.com,2013:api mc1x9de8a17738fc0996ebc2ee0dc54ec7b42504fb86_v2",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					},
+					{
+						"key": "x-nga-source",
+						"value": "PHOENIX_DESKTOP",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ad\":{\"locations\":[{\"code\":\"16\",\"key\":\"region\",\"label\":\"Jalisco\",\"locations\":[{\"code\":\"667\",\"key\":\"municipality\",\"label\":\"Cañadas de Obregón\",\"locations\":[{\"code\":\"75842\",\"key\":\"area\",\"label\":\"La Cueva\"}]}]}],\"subject\":\"Venta pisapapeles antiguos\",\"body\":\"Pregunte sin compromiso por tipos de estampados :)\",\"category\":{\"code\":\"4100\"},\"images\":[],\"price\":{\"currency\":\"mxn\",\"price_value\":50},\"ad_details\":{},\"phone_hidden\":1,\"plate\":\"\",\"vin\":\"\",\"type\":{\"code\":\"s\",\"label\":\"\"},\"ad\":\"Venta pisapapeles antiguos\"},\"category_suggestion\":false,\"commit\":true}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/nga/api/v1.7/private/accounts//10614331/klfst?lang=es",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1.7",
+						"private",
+						"accounts",
+						"",
+						"10614331",
+						"klfst"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Anuncio",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a477459d-96c0-4b0b-bb31-2030c72da7d1",
+						"exec": [
+							"let getTokenRequest = {\r",
+							"    method: 'POSTT',\r",
+							"    url: 'https://webapi.segundamano.mx/nga/api/v1.7/private/accounts/10614331/klfst/66918168/actions?lang=es',\r",
+							"    header: {\r",
+							"            Authorization: 'tag:scmcoord.com,2013:api mc1x0d428be4c87441999c60bc7d738d9b38daf685a1_v2'\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(getTokenRequest, (err, response) => {\r",
+							"    var jsonResponse = response.json(),\r",
+							"        newAccessToken = jsonResponse.access_token;\r",
+							"    pm.environment.set('accessToken', newAccessToken);\r",
+							"    pm.variables.set('accessToken', newAccessToken);\r",
+							"    console.log({ err, response, newAccessToken })\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "5fdb7bed-38e6-4904-9df3-9df5e5fb6579",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.test(\"Validar Status 201\", function(){",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Validar que tenga un body\", function(){",
+							"    pm.response.to.be.withBody;",
+							"});",
+							"pm.test(\"validar Json\", function(){",
+							"    pm.response.to.be.json;",
+							"});",
+							"pm.test(\"Validar Acción correcta\", function(){",
+							"    pm.expect(jsonData.action.action_type).to.eql(\"edit\");",
+							"});",
+							"pm.test(\"Validar que el Anuncio tenga un ID\", function(){",
+							"    pm.expect(jsonData.ad.ad_id).to.be.not.empty;",
+							"});",
+							"pm.test(\"Validar Título del Anuncio\", function(){",
+							"    pm.expect(jsonData.ad.subject).to.eql(\"Venta de pestañas grises muy delgaditas\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate, br",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "tag:scmcoord.com,2013:api mc1x0d428be4c87441999c60bc7d738d9b38daf685a1_v2",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					},
+					{
+						"key": "x-nga-source",
+						"value": "PHOENIX_DESKTOP",
+						"type": "text"
+					},
+					{
+						"key": "Path",
+						"value": "/nga/api/v1.7/private/accounts/10614331/klfst/66918168/actions?lang=es",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ad\":{\"locations\":[{\"code\":\"16\",\"key\":\"region\",\"label\":\"Jalisco\",\"locations\":[{\"code\":\"667\",\"key\":\"municipality\",\"label\":\"Cañadas de Obregón\",\"locations\":[{\"code\":\"75841\",\"key\":\"area\",\"label\":\"Rincón de Guzmán\"}]}]}],\"subject\":\"Venta de pestañas grises muy delgaditas\",\"body\":\"Pregunte sin compromiso por otros colores y grosores\",\"category\":{\"code\":\"4100\"},\"images\":[],\"price\":{\"currency\":\"MXN\",\"price_value\":37},\"ad_details\":{},\"phone_hidden\":1,\"type\":{\"code\":\"s\",\"label\":\"Vendo\"},\"adId\":\"66918168\"},\"category_suggestion\":false,\"commit\":true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{base_url}}/nga/api/v1.7/private/accounts/10614331/klfst/66918168/actions?lang=es",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1.7",
+						"private",
+						"accounts",
+						"10614331",
+						"klfst",
+						"66918168",
+						"actions"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar Anuncio",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "97d87139-9d75-4716-a21a-b6497f7c0ddc",
+						"exec": [
+							"let getTokenRequest = {\r",
+							"    method: 'POST',\r",
+							"    url: 'https://webapi.segundamano.mx/nga/api/v1.7/private/accounts/10614331/klfst/66918168',\r",
+							"    header: {\r",
+							"            Authorization: 'tag:scmcoord.com,2013:api mc1x3a50a76896f71fc42c06ddbc7b2811995745ef1d_v2'\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(getTokenRequest, (err, response) => {\r",
+							"    var jsonResponse = response.json(),\r",
+							"        newAccessToken = jsonResponse.access_token;\r",
+							"    pm.environment.set('accessToken', newAccessToken);\r",
+							"    pm.variables.set('accessToken', newAccessToken);\r",
+							"    console.log({ err, response, newAccessToken })\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "eded9d7a-763c-4cd4-bac0-219b9d87f9a9",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.test(\"Validar Status 200\", function(){",
+							"    pm.response.to.be.ok;",
+							"});",
+							"pm.test(\"Validar que tenga un body\", function(){",
+							"    pm.response.to.be.withBody;",
+							"});",
+							"pm.test(\"validar Json\", function(){",
+							"    pm.response.to.be.json;",
+							"});",
+							"pm.test(\"Validar Acción correcta\", function(){",
+							"    pm.expect(jsonData.action.action_type).to.eql(\"delete\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate, br",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "tag:scmcoord.com,2013:api mc1x3a50a76896f71fc42c06ddbc7b2811995745ef1d_v2",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=UTF-8",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"delete_reason\":{\"code\":\"5\"}}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/nga/api/v1/private/accounts/10614331/klfst/66920284",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1",
+						"private",
+						"accounts",
+						"10614331",
+						"klfst",
+						"66920284"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
