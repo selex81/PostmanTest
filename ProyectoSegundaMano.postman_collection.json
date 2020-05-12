@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d67f6c90-5169-4f76-864a-c3ff65498bd4",
+		"_postman_id": "1fc62b38-9e87-4654-9116-11137600132c",
 		"name": "ProyectoSegundaMano",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,7 +11,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "76083a6c-5c80-4c83-8896-17748337740f",
+						"id": "d4401c1a-241a-4633-95cd-b1f3c2002552",
 						"exec": [
 							"var AllData = pm.response.json();",
 							"pm.test(\"Validar creacion de usuario\", function(){",
@@ -95,7 +95,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "d54741fa-cead-40d8-a557-6cf9fe803580",
+						"id": "f78d72d2-c51a-441f-a261-9f4a1a36c1ed",
 						"exec": [
 							"let getTokenRequest = {\r",
 							"    method: 'POST',\r",
@@ -119,7 +119,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "eca13a1b-a1e9-4ec0-9480-e3471df6f5ba",
+						"id": "7e6a85b1-b389-41af-9c76-689d4ff19002",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.test(\"Validar Status 201\", function(){",
@@ -220,7 +220,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "a477459d-96c0-4b0b-bb31-2030c72da7d1",
+						"id": "61e0f0df-0ceb-4c9b-a4ba-7d40a485dce0",
 						"exec": [
 							"let getTokenRequest = {\r",
 							"    method: 'POSTT',\r",
@@ -244,7 +244,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5fdb7bed-38e6-4904-9df3-9df5e5fb6579",
+						"id": "31e2748a-2e3c-45b6-9317-4e1a1573e952",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.test(\"Validar Status 201\", function(){",
@@ -346,7 +346,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "97d87139-9d75-4716-a21a-b6497f7c0ddc",
+						"id": "409c2fc8-146b-4820-8fbd-d6f3b99b175b",
 						"exec": [
 							"let getTokenRequest = {\r",
 							"    method: 'POST',\r",
@@ -370,7 +370,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "eded9d7a-763c-4cd4-bac0-219b9d87f9a9",
+						"id": "f6ef8732-a0f8-4aae-b5a6-d0d60aae4344",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.test(\"Validar Status 200\", function(){",
